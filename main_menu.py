@@ -74,7 +74,7 @@ Title.place(relx=0.5, rely=0.2, anchor="center")
 # Start button
 game_button = tk.Button(w, text="Start", width=25, height=3, bg="darkred", fg="white", font=fontStyleButton)
 game_button.place(relx=0.5, rely=0.4, anchor="center")
-game_button.bind("<ButtonPress-1>", game_start,print("w"))
+game_button.bind("<ButtonPress-1>", game_start)
 
 
 # Options button
