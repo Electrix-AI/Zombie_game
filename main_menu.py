@@ -31,7 +31,7 @@ def options_open():
 
 def game_start(Event=None):
     # Initialize the main window
-    game = tk.Tk()
+    game = tk.Toplevel()
     game.title("Zombie Game")
     game.configure(bg="black")
     game.geometry("600x600+550+200")
@@ -41,8 +41,10 @@ def game_start(Event=None):
     fontStyleButton = tkFont.Font(family="Arial", size=14, weight="bold")
 
     # Load Health image (change path you have to)
-    load = Image.open('Zombie_game/Health.png')
-    img = ImageTk.PhotoImage(load)
+    try:
+        img = tk.PhotoImage(file='Zombie_game\Health.png')
+    except tk.TclError:
+        print("Image file not found or unsupported!")
     
     # Use Label to display the image
     health_image_label = tk.Label(game, image=img, bg='black')  # background
@@ -58,6 +60,7 @@ def game_start(Event=None):
     area_label.grid(column=1, row=7)
 
 
+
     # Start the main loop
     game.mainloop()
 
@@ -69,9 +72,10 @@ Title = tk.Label(w, text="Zombie Game", font=fontStyleTitle, foreground="red", b
 Title.place(relx=0.5, rely=0.2, anchor="center")
 
 # Start button
-game_button = tk.Button(w, text="Start", width=25, height=3, bg="darkred", fg="white", font=fontStyleButton,command=w.destroy)
+game_button = tk.Button(w, text="Start", width=25, height=3, bg="darkred", fg="white", font=fontStyleButton)
 game_button.place(relx=0.5, rely=0.4, anchor="center")
-game_button.bind("<ButtonPress-1>", game_start)
+game_button.bind("<ButtonPress-1>", game_start,print("w"))
+
 
 # Options button
 options_button = tk.Button(w, text="Options", width=25, height=3, bg="darkgreen", fg="white", font=fontStyleButton, command=options_open)
