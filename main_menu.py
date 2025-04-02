@@ -1,5 +1,6 @@
 import tkinter as tk
 import tkinter.font as tkFont
+import game
 
 # Main window setup
 w = tk.Tk()
@@ -11,8 +12,8 @@ fontStyleTitle = tkFont.Font(family="Lucida Grande", size=40)
 fontStyleButton = tkFont.Font(family="Arial", size=14, weight="bold")
 
 ############################################# Functions ###################################################################################################
-def handle_click_start(event):
-    print("Game Started!")
+def handle_click_start():
+    game.game_start()
 
 
 def options_open():
@@ -35,8 +36,8 @@ Title = tk.Label(w, text="Zombie Game", font=fontStyleTitle, foreground="red", b
 Title.place(relx=0.5, rely=0.2, anchor="center")
 
 
-start = tk.Button(w,text="Start",width=25,height=3,bg="darkred",fg="white",font=fontStyleButton,command=handle_click_start)
-start.place(relx=0.5, rely=0.4, anchor="center")
+game_button = tk.Button(w,text="Start",width=25,height=3,bg="darkred",fg="white",font=fontStyleButton,command=handle_click_start)
+game_button.place(relx=0.5, rely=0.4, anchor="center")
 
 
 options = tk.Button(w,text="Options",width=25,height=3,bg="darkgreen",fg="white",font=fontStyleButton,command=options_open)
