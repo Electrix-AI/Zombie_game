@@ -30,8 +30,9 @@ def options_open():
     options.protocol("WM_DELETE_WINDOW", options.destroy)
 
 def game_start(Event=None):
+    w.destroy()  # Close the main menu window
     # Initialize the main window
-    game = tk.Toplevel()
+    game = tk.Tk()
     game.title("Zombie Game")
     game.configure(bg="black")
     game.geometry("600x600+550+200")
