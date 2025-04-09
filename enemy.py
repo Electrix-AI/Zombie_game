@@ -9,7 +9,7 @@ class enemy():
         return self._baseA
     def gethp(self):
         return self._baseH
-    def atk(self,playerH):
+    def atk(self):
         pass
 class zombieE(enemy):
     def __init__(self, baseA, baseH):
@@ -18,16 +18,13 @@ class zombieE(enemy):
         return super().getatk()
     def gethp(self):
         return super().getatk()
-    def infection(self,cinfect):
-        zIn = r.uniform(0.0,3.0) + cinfect #total infection rate of player
+    def infection(self):
+        zIn = r.uniform(0.0,3.0) #total infection rate of player
         #print("Player's infection is now at:")
         return zIn
-    def atk(self,playerH,cinfect):
-        playerH = playerH - self._baseA
-        if(r.random() > 0.5):
-            infection(cinfect) # type: ignore
-        #print("Player health now at:",playerH)
-        return playerH
+    def atk(self, player):
+        player.take_damage(self._baseA, source=self)
+
     
 
 class banditE(enemy):
