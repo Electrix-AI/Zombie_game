@@ -51,10 +51,6 @@ class Player:
         return reduction
 
     def use_consumable(self, item_name):
-        """
-        Use a consumable item from the inventory.
-        Valid consumables: "bandage" and "antibiotic"
-        """
         if item_name not in self.inventory or self.inventory[item_name] <= 0:
             return f"No {item_name} left in inventory."
         
@@ -70,34 +66,18 @@ class Player:
             return f"{item_name} is not a recognized consumable item."
 
     def use_weapon(self, weapon_name, target):
-        """
-        Use a weapon from the inventory. When used, the weapon gives a flat boost
-        to the player's attack stat for the current attack.
-        
-        Ranged Weapon:
-          - Requires ammo. Consumes one ammo per attack.
-          - Provides a flat bonus of 7.0 to the attack.
-        
-        Melee Weapon:
-          - Does not require ammo.
-          - Provides a flat bonus of 5.0 to the attack.
-        """
         if weapon_name not in self.inventory or self.inventory[weapon_name] <= 0:
             return f"No {weapon_name} available."
-        
-        # Determine the flat attack bonus based on the weapon.
         if weapon_name == "ranged_weapon":
             if self.inventory.get("ammo", 0) > 0:
                 self.inventory["ammo"] -= 1
-                bonus = 7.0
+                bonus = 10.0
             else:
                 return "No ammo left for ranged weapon!"
         elif weapon_name == "melee_weapon":
             bonus = 5.0
         else:
             return f"{weapon_name} is not recognized as a weapon."
-        
-        # Execute the attack with the flat bonus.
         damage = self.attack(target, bonus=bonus)
         return f"Used {weapon_name}! Dealt {damage:.2f} damage with a flat boost of {bonus}."
 
