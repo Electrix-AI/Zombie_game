@@ -9,11 +9,11 @@ class Player:
         self.infection_level = 0.0
 
         self.inventory = {
-            "bandage": 1,         # heals 20 HP when used
-            "ranged_weapon": 1,   # used with ammo for a ranged attack
-            "melee_weapon": 1,    # can be used every attack (no consumption)
-            "antibiotic": 1,      # reduces infection by 10 when used
-            "ammo": 5             # ammo needed for the ranged weapon
+            "bandage": 1,         
+            "ranged_weapon": 1,   
+            "melee_weapon": 1,    
+            "antibiotic": 1,      
+            "ammo": 5             
         }
     def get_inventory(self):
         return self.inventory
