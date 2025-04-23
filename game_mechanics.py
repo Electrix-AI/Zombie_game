@@ -2,23 +2,30 @@
 import enemy # so we can set what the enemy is and what thier health is
 import player # so we can set the player and set health
 
-def yes_or_no(question,yes_response,no_response ):
-   while True:
-        playint = input(question).strip().lower()
-        if playint in ["yes", "y"]:
-            print(yes_response)
-            return False
-        elif playint in ["no", "n"]:
-            print(no_response)
-            return False
-        else:
-            print("Please enter 'yes' or 'no'.")
+def set_player_name(name):
+    player.__name__ = name
+    return name
 
+def get_welcome_message(name):
+    return f"Welcome, {name}! Get ready to Survive."
 
+def confirm_name(name):
+    return f"Yes? Then that’s great welcome, {name}!"
 
-name_of_player = input("Enter your name: ")
-player.__name__ = name_of_player
-yes_or_no("Is your name " + name_of_player + " correct? ","Yes? then thats great welcome " + name_of_player+"!", "No? "+"well too bad welcome "+name_of_player+"!")
+def confirm_name_no(name):
+    return f"No? Well, too bad welcome anyway, {name}!"
 
+def zombie_bite_event(name):
+    return f"{name} was bitten by a zombie!"
+
+def infection_event(name):
+    return f"{name} has been infected!"
+
+def death_event(name):
+    return f"{name} has died!"
 #print(player.__name__)
 
+def intro_story1():
+    return f"You are {player.__name__}, a survivor in a world overrun by zombies. Your mission is to navigate through dangerous areas and get to the military base, fight off hordes of zombies, and ultimately survive the apocalypse. Are you ready to face the challenges ahead?"
+def intro_story2():
+    return f"well no matter good luck {player.__name__}"
