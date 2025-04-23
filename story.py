@@ -62,7 +62,7 @@ class Story:
             "enemies": enemies,
             "loot": loot,
             "events": events,
-            "difficulty": "medium"
+            "difficulty": "easy"
         }
     
     def house_2(self):
@@ -110,7 +110,51 @@ class Story:
             "events": events,
             "difficulty": "hard"
         }
-
+ 
+    def house_3(self):
+        description = """
+        House 3: A one story home located in the middle of no where. 
+        The front door is locked, and there's a broken window that leads to what looks like a living room.
+        You can hear faint shuffling sounds from inside. This house might have medical supplies in its bathroom.
+        """
+        
+        # Create enemies for this location
+        enemies = [
+            zombieE(5, 30),  # A stronger zombie
+            zombieE(2, 20)   # A weaker zombie
+        ]
+        
+        loot = {
+            "bandage": 1,
+            "antibiotic": 1,
+            "ammo": 3
+        }
+        
+        events = {
+            "locked_door": """
+            You slowly push the door open. It is locked.
+            Zombie jumps you out of nowhere! good thing you have a weapon.
+            """,
+            "broken_window": """
+            You carefully climb through the window, avoiding the sharp glass.
+            You're in what appears to be a living room. There's a first-aid kit visible in the corner.
+            """,
+            "exterior": """
+            Walking around the house, you notice:
+            - Blood that makes you want to vomit
+            - Some fresh footprints in the mud leadging to the bottom of the house
+            - A broken doll near a broken gap in the wire fence leading to the bottom of the house
+            """
+        }
+        
+        return {
+            "description": description,
+            "enemies": enemies,
+            "loot": loot,
+            "events": events,
+            "difficulty": "hard"
+        }
+    
     def handle_combat(self, player, enemies):
         combat_text = []
         for enemy in enemies:
@@ -133,6 +177,8 @@ class Story:
             return self.house_1()
         elif location == "house_2":
             return self.house_2()
+        elif location == "house_3":
+            return self.house_3()
         else:
             return None
     
