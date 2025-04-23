@@ -25,6 +25,8 @@ def death_event(name):
     return f"{name} has died!"
 #print(player.__name__)
 
+
+################################################## STORY ##################################################
 def intro_story1():
     return f"You are {player.__name__}, a survivor in a world overrun by zombies. Your mission is to navigate through dangerous areas and get to the military base, fight off hordes of zombies, and ultimately survive the apocalypse. Are you ready to face the challenges ahead?"
 def intro_story2():
@@ -41,3 +43,15 @@ def house_out():
     return f"once outside the house you see a group of zombies running towards you, luckily you see another house nearby, do you want to run inside or fight the zombies?"
 def chapter2():
     return f"chanpter 2: You escaped the zombies by going in the near by house, but you are not safe yet. do you want to camp out in the house or leave the house and head to the militarty base?"
+def stay_in_house():
+    return f"You decided to stay in the house. You were lucky not to have gone outside due to a hoard of zombies near by. do you want to wait it our or barricade the house?"
+def barricade():
+    return f" you barricaded the house but the zombies heard you and now trynig to break a way in, do you want to fight them or run away?"
+def run_away_from_house():
+    return f"you decided to run away luckily you got out saftly"
+def wait_it_out():
+    return f"you waited it out and the zombies left, do you want to leave the house or stay in the house?"
+def leave_house():
+    return f"you left the house and saw a group of people a few blocks away, do you want to go to them or go to the military base?"
+def go_to_people():
+    return f" The group of people were actually bandits and they attacked you! do you want to fight them or run away?"

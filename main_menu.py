@@ -120,7 +120,7 @@ game_button.place(relx=0.5, rely=0.4, anchor="center")
 game_button.bind("<ButtonPress-1>", game_start)
 
 
-# Options button
+# Options button-does nothing
 options_button = tk.Button(w, text="Options", width=25, height=3, bg="darkgreen", fg="white", font=fontStyleButton, command=options_open)
 options_button.place(relx=0.5, rely=0.5, anchor="center")
 
