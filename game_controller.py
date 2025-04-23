@@ -121,7 +121,7 @@ class GameController:
             self.create_button(self.buttons_frame, "Exterior", 
                              lambda: self.handle_house_1_choice("3"),
                              disabled="3" in self.chosen_options["house_1"])
-        else:
+        elif house == "house_2":
             # Front door option
             self.create_button(self.buttons_frame, "Front Door", 
                              lambda: self.handle_house_2_choice("1"),
