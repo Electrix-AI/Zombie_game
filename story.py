@@ -1,0 +1,158 @@
+from enemy import zombieE, banditE
+import random as r
+
+class Story:
+    def __init__(self):
+        self.current_location = "start"
+        self.visited_locations = set()
+        self.story_flags = {
+            "found_car_key": False,
+            "has_map": False,
+            "met_survivor": False
+        }
+        
+    def get_intro(self):
+        return """
+        The world as you knew it has changed. A mysterious infection has turned most of the population into mindless zombies.
+        You find yourself in a small town, trying to survive. Your house was ransacked, forcing you to seek shelter elsewhere.
+        There are two houses nearby that might have supplies...
+
+        What would you like to do?
+        1. Investigate House 1 (Suburban Home)
+        2. Investigate House 2 (Fortified House)
+        """
+    
+    def house_1(self):
+        description = """
+        House 1: A modest two-story suburban home. The front door is slightly ajar, and there's a broken window on the first floor.
+        You can hear faint shuffling sounds from inside. This house might have medical supplies in its bathroom.
+        """
+        
+        # Create enemies for this location
+        enemies = [
+            zombieE(5, 30),  # A weaker zombie
+            zombieE(8, 40)   # A stronger zombie
+        ]
+        
+        loot = {
+            "bandage": 2,
+            "antibiotic": 1,
+            "ammo": 3
+        }
+        
+        events = {
+            "front_door": """
+            You slowly push the door open. The hinges creak loudly.
+            You hear shuffling upstairs getting more active. Better be ready for company...
+            """,
+            "broken_window": """
+            You carefully climb through the window, avoiding the sharp glass.
+            You're in what appears to be a living room. There's a first-aid kit visible in the corner.
+            """,
+            "exterior": """
+            Walking around the house, you notice:
+            - A partially open garage
+            - Some fresh footprints in the mud
+            - A dropped wallet near the back door
+            """
+        }
+        
+        return {
+            "description": description,
+            "enemies": enemies,
+            "loot": loot,
+            "events": events,
+            "difficulty": "medium"
+        }
+    
+    def house_2(self):
+        description = """
+        House 2: A larger, more fortified-looking house with boarded-up windows. It seems someone tried to secure this place.
+        There's a pickup truck in the driveway with its hood open. You can see movement through a gap in the boards.
+        """
+        
+        # Create enemies for this location
+        enemies = [
+            banditE(10, 50),  # A tough bandit
+            zombieE(7, 35)    # A zombie
+        ]
+        
+        loot = {
+            "ranged_weapon": 1,
+            "ammo": 5,
+            "bandage": 1,
+            "melee_weapon": 1,
+            "car_key": 1      # Added car key to potential loot
+        }
+
+        events = {
+            "front_door": """
+            As you approach the door, you hear voices inside:
+            "Someone's out there..." a gruff voice whispers.
+            "Maybe they have supplies..." another responds.
+            """,
+            "pickup_truck": """
+            The truck looks recently abandoned. The hood is still warm.
+            In the truck bed, you find some scattered tools and an empty gas can.
+            The key is still in the ignition! You quickly grab it.
+            """,
+            "alternate_entrance": """
+            Around back, you find a cellar door.
+            It's locked, but looks weak enough to break through.
+            Though the noise might alert those inside...
+            """
+        }
+        
+        return {
+            "description": description,
+            "enemies": enemies,
+            "loot": loot,
+            "events": events,
+            "difficulty": "hard"
+        }
+
+    def handle_combat(self, player, enemies):
+        combat_text = []
+        for enemy in enemies:
+            if isinstance(enemy, zombieE):
+                combat_text.append("""
+                A zombie lurches toward you! Its rotting flesh and vacant eyes tell you all you need to know.
+                Your infection risk increases with every hit it lands.
+                """)
+            elif isinstance(enemy, banditE):
+                combat_text.append("""
+                A survivor points their weapon at you. "Nothing personal," they growl,
+                "But supplies are supplies..."
+                """)
+            
+            # Combat resolution can be handled by game logic
+        return combat_text
+
+    def get_location_info(self, location):
+        if location == "house_1":
+            return self.house_1()
+        elif location == "house_2":
+            return self.house_2()
+        else:
+            return None
+    
+    def mark_location_visited(self, location):
+        self.visited_locations.add(location)
+    
+    def is_location_visited(self, location):
+        return location in self.visited_locations
+
+    def get_random_event(self):
+        events = [
+            "You hear distant gunshots. Someone else might be fighting for their life.",
+            "A helicopter flies overhead, too high to signal.",
+            "The wind carries the smell of smoke. Something's burning in the distance.",
+            "A car alarm goes off somewhere nearby. It might draw unwanted attention."
+        ]
+        return r.choice(events)
+
+    def update_story_flags(self, flag, value):
+        if flag in self.story_flags:
+            self.story_flags[flag] = value
+            return True
+        return False 
