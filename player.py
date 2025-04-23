@@ -13,7 +13,9 @@ class Player:
             "ranged_weapon": 1,   
             "melee_weapon": 1,    
             "antibiotic": 1,      
-            "ammo": 5             
+            "ammo": 5,
+            "car_key": 0,         # Car key for potential escape
+            "gas": 0              # Gas needed for the car
         }
     def get_inventory(self):
         return self.inventory
@@ -27,8 +29,8 @@ class Player:
     def is_alive(self):
         return self.health > 0
 
-    def attack(self, target):
-        damage = r.uniform(5.0, self.attack_power)
+    def attack(self, target, bonus=0):
+        damage = r.uniform(5.0, self.attack_power) + bonus
         target._baseH -= damage  
         return damage
 
