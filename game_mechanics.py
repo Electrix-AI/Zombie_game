@@ -29,3 +29,15 @@ def intro_story1():
     return f"You are {player.__name__}, a survivor in a world overrun by zombies. Your mission is to navigate through dangerous areas and get to the military base, fight off hordes of zombies, and ultimately survive the apocalypse. Are you ready to face the challenges ahead?"
 def intro_story2():
     return f"well no matter good luck {player.__name__}"
+def chapter1():
+    return f"Chapter 1: The Outbreak\n\nYou wake up in a deserted city, the streets are eerily quiet. You hear distant groans and shuffles. You need to find supplies and weapons to defend yourself. Do you want to search the nearby house or head to the park?"
+def park():
+    return f"You head to the park, but it's overrun with zombies! do you want to fight them or run away?"
+def house1():
+    return f"You enter the house, but it's dark and filled with zombies! Do you want to search for supplies or fight your way out?"
+def park_out():
+    return f"once outside the park you see a group of zombies running towards you, luckily you see a house nearby, do you want to run inside or fight the zombies?"
+def house_out():
+    return f"once outside the house you see a group of zombies running towards you, luckily you see another house nearby, do you want to run inside or fight the zombies?"
+def chapter2():
+    return f"chanpter 2: You escaped the zombies by going in the near by house, but you are not safe yet. do you want to camp out in the house or leave the house and head to the militarty base?"
