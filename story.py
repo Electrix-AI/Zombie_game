@@ -155,6 +155,50 @@ class Story:
             "difficulty": "hard"
         }
     
+    def military_base(self):
+        description = """
+            Military Base: The final habitable place in this small town. 
+            You can tell there are people here, the security lights are on and you can see outlines of people in the security towers.
+            This is the last hope you have. It seems to be a safe haven from the looks of it.
+            The only issue now is dealing with the zombies at the gate to ask if they have supplies to get out of here.
+             """
+        
+        # Create enemies for this location
+        enemies = [
+            zombieE(7, 20),  # A stronger zombie
+            zombieE(3, 50),   # A Bulky zombie
+            zombieE(2,30)   # A weaker zombie
+        ]
+        
+        loot = {
+            "ammo": 4,
+            "bandage": 1
+        }
+
+        events = {
+            "front_gate": """
+            From what you can see there are three zombies at the gate trying to bash it down.
+            One seems to be on the bigger side, another like what you've seen in the first house
+            In your way of getting in that base.         
+            Are you sure you're ready for this fight? There's no turning back once you start
+            """
+            ,
+            "busted car": """
+            Through the driver's side window, you notice:
+            - A small box of ammunition for your gun
+            - A small roll of bandages
+            """
+        }
+
+
+        return {
+            "description": description,
+            "enemies": enemies,
+            "loot": loot,
+            "events": events,
+            "difficulty": "hard"
+        }
+
     def handle_combat(self, player, enemies):
         combat_text = []
         for enemy in enemies:
