@@ -13,7 +13,8 @@ class GameController:
         self.chosen_options = {
             "house_1": set(),
             "house_2": set(),
-            "house_3": set()
+            "house_3": set(),
+            "house_4": set()
         }
         
         # Main game display
@@ -87,6 +88,7 @@ class GameController:
         house1_complete = len(self.chosen_options["house_1"]) == 3  # All 3 options explored
         house2_complete = len(self.chosen_options["house_2"]) == 3 and self.player.get_inventory()["car_key"] > 0  # All options explored and has key
         house3_complete = len(self.chosen_options["house_3"]) == 3  # All 3 options explored
+        house4_complete = len(self.chosen_options["house_4"]) == 3  # All 3 options explored
         if not house1_complete:
             remaining_h1 = 3 - len(self.chosen_options["house_1"])
             self.create_button(self.buttons_frame, f"House 1 ({remaining_h1} areas left)", 
@@ -107,7 +109,11 @@ class GameController:
                 remaining_h3 = 3 - len(self.chosen_options["house_3"])
                 self.create_button(self.buttons_frame, f"House 3 ({remaining_h3} areas left)", 
                                lambda: self.show_house_choices("house_3"))
-                  
+                
+        if not house4_complete and house3_complete and house1_complete and house2_complete:   
+            remaining_h4 = 3 - len(self.chosen_options["house_4"])
+            self.create_button(self.buttons_frame, f"House 4 ({remaining_h4} areas left)", 
+                            lambda: self.show_house_choices("house_4"))               
     def show_house_choices(self, house):
         self.clear_buttons()
         house_info = self.story.get_location_info(house)
@@ -156,6 +162,20 @@ class GameController:
             self.create_button(self.buttons_frame, "Exterior", 
                              lambda: self.handle_house_3_choice("3"),
                              disabled="3" in self.chosen_options["house_3"])
+            
+        elif house == "house_4":
+            # Front door option
+            self.create_button(self.buttons_frame, "Locked Door", 
+                             lambda: self.handle_house_3_choice("1"),
+                             disabled="1" in self.chosen_options["house_4"])
+            # Window option
+            self.create_button(self.buttons_frame, "Window", 
+                             lambda: self.handle_house_3_choice("2"),
+                             disabled="2" in self.chosen_options["house_4"])
+            # Exterior option
+            self.create_button(self.buttons_frame, "Exterior", 
+                             lambda: self.handle_house_3_choice("3"),
+                             disabled="3" in self.chosen_options["house_4"])
         # Show return to main choices button
         self.create_button(self.buttons_frame, "Return to Houses", self.show_main_choices)
     
@@ -245,6 +265,34 @@ class GameController:
         if not self.story.is_location_visited("house_3"):
             self.add_location_loot(house_info["loot"])
             self.story.mark_location_visited("house_3")
+
+    def handle_house_4_choice(self, choice):
+        # Mark this choice as chosen
+        self.chosen_options["house_4"].add(choice)
+        
+        house_info = self.story.get_location_info("house_4")
+        
+        if choice == "1":  # barricaded door
+            self.update_display(house_info["events"]["barricaded_door"])
+            
+            
+        elif choice == "2":  # Window
+            self.update_display(house_info["events"]["broken_window"])
+            self.initiate_combat(house_info["enemies"][:1])
+            self.player.add_item("key_card", 1)
+            self.update_display("You found a key card! This might be useful later.")
+            self.update_inventory()
+                
+        elif choice == "3":  # Exterior
+            self.update_display(house_info["events"]["exterior"])
+            self.player.add_item("bandage", 1)
+            self.update_display("Found an extra bandage!")
+            self.update_inventory()
+            self.show_house_choices("house_4")
+            
+        if not self.story.is_location_visited("house_4"):
+            self.add_location_loot(house_info["loot"])
+            self.story.mark_location_visited("house_4")
    
     def initiate_combat(self, enemies):
         self.current_enemies = enemies.copy()  # Make a copy of the enemies list

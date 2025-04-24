@@ -155,6 +155,53 @@ class Story:
             "difficulty": "hard"
         }
     
+    def house_4(self):
+        description = """
+        House 4: A strange looking house with a large fence surrounding it.
+        The house looks like it has been fortified. The windows are boarded up, and the front door is locked.
+        but there is a broken gap in the fence leading to the back of the house.
+        The front door is locked, but theres a window on the top floor that is broken.
+        you can hear faint shuffling sounds from inside. This house might have a way to get into the mili
+        """
+        
+        # Create enemies for this location
+        enemies = [
+            zombieE(2, 100),  # A strong zombie
+            zombieE(2, 20)   # A weaker zombie
+        ]
+        
+        loot = {
+            "key_card": 1,
+            "bandage": 1,
+            "antibiotic": 1,
+            "ammo": 5
+        }
+        
+        events = {
+            "barricaded_door": """
+            You slowly push the door open. It is locked.
+            Zombie jumps you out of nowhere! good thing you have a weapon.
+            """,
+            "broken_window": """
+            You carefully climb through the window using a ladder avoiding, the sharp glass.
+            You're in what appears to be a bed room. There's a open safe only having a key_card.
+            """,
+            "exterior": """
+            Walking around the house, you notice:
+            - barrels of gasoline in the back yard
+            - blood statins on the wall leading to the front door
+            - A lot of bullet casings lay on the ground everywhere
+            """
+        }
+        
+        return {
+            "description": description,
+            "enemies": enemies,
+            "loot": loot,
+            "events": events,
+            "difficulty": "hard"
+        }
+    
     def handle_combat(self, player, enemies):
         combat_text = []
         for enemy in enemies:
@@ -179,6 +226,8 @@ class Story:
             return self.house_2()
         elif location == "house_3":
             return self.house_3()
+        elif location == "house_4":
+            return self.house_4()
         else:
             return None
     
