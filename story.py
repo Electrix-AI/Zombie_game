@@ -8,7 +8,9 @@ class Story:
         self.story_flags = {
             "found_car_key": False,
             "has_map": False,
-            "met_survivor": False
+            "met_survivor": False,
+            "found_key_card": False,
+            "found_gas": False,
         }
         
     def get_intro(self):
@@ -82,7 +84,6 @@ class Story:
             "ammo": 5,
             "bandage": 1,
             "melee_weapon": 1,
-            "car_key": 1      # Added car key to potential loot
         }
 
         events = {
@@ -155,9 +156,8 @@ class Story:
             "difficulty": "hard"
         }
     
-<<<<<<< HEAD
     def house_4(self):
-        description = """
+        description  = """
         House 4: A strange looking house with a large fence surrounding it.
         The house looks like it has been fortified. The windows are boarded up, and the front door is locked.
         but there is a broken gap in the fence leading to the back of the house.
@@ -172,7 +172,7 @@ class Story:
         ]
         
         loot = {
-            "key_card": 1,
+
             "bandage": 1,
             "antibiotic": 1,
             "ammo": 5
@@ -181,7 +181,7 @@ class Story:
         events = {
             "barricaded_door": """
             You slowly push the door open. It is locked.
-            Zombie jumps you out of nowhere! good thing you have a weapon.
+            however you find cans of gas outside the house.
             """,
             "broken_window": """
             You carefully climb through the window using a ladder avoiding, the sharp glass.
@@ -194,8 +194,14 @@ class Story:
             - A lot of bullet casings lay on the ground everywhere
             """
         }
+        return {
+            "description": description,
+            "enemies": enemies,
+            "loot": loot,
+            "events": events,
+            "difficulty": "hard"
+        }
         
-=======
     def military_base(self):
         description = """
             Military Base: The final habitable place in this small town. 
@@ -232,7 +238,6 @@ class Story:
         }
 
 
->>>>>>> c83a59602ba4adc257723981f5df0586f6467186
         return {
             "description": description,
             "enemies": enemies,
@@ -240,11 +245,8 @@ class Story:
             "events": events,
             "difficulty": "hard"
         }
-<<<<<<< HEAD
     
-=======
 
->>>>>>> c83a59602ba4adc257723981f5df0586f6467186
     def handle_combat(self, player, enemies):
         combat_text = []
         for enemy in enemies:

@@ -36,7 +36,7 @@ class GameController:
         self.infection_label.pack(side=tk.LEFT, padx=5)
         
         # Inventory display
-        self.inventory_text = tk.Text(self.root, wrap=tk.WORD, width=20, height=8, bg='black', fg='white')
+        self.inventory_text = tk.Text(self.root, wrap=tk.WORD, width=20, height=9, bg='black', fg='white')
         self.inventory_text.grid(row=0, column=2, padx=10, pady=10, sticky='n')
         
         # Buttons frame
@@ -88,7 +88,7 @@ class GameController:
         house1_complete = len(self.chosen_options["house_1"]) == 3  # All 3 options explored
         house2_complete = len(self.chosen_options["house_2"]) == 3 and self.player.get_inventory()["car_key"] > 0  # All options explored and has key
         house3_complete = len(self.chosen_options["house_3"]) == 3  # All 3 options explored
-        house4_complete = len(self.chosen_options["house_4"]) == 3  # All 3 options explored
+        house4_complete = len(self.chosen_options["house_4"]) == 3 and self.player.get_inventory()["key_card"] # All 3 options explored
         if not house1_complete:
             remaining_h1 = 3 - len(self.chosen_options["house_1"])
             self.create_button(self.buttons_frame, f"House 1 ({remaining_h1} areas left)", 
@@ -103,9 +103,8 @@ class GameController:
                 self.create_button(self.buttons_frame, f"House 2 ({remaining_h2} areas left)", 
                                lambda: self.show_house_choices("house_2"))
         
-        if house1_complete and house2_complete:
-            self.update_display("\nYou've thoroughly searched both houses. You found a car key - this might be useful later...")
-            if not house3_complete and house1_complete and house2_complete:
+      
+        if not house3_complete and house1_complete and house2_complete:
                 remaining_h3 = 3 - len(self.chosen_options["house_3"])
                 self.create_button(self.buttons_frame, f"House 3 ({remaining_h3} areas left)", 
                                lambda: self.show_house_choices("house_3"))
@@ -113,7 +112,13 @@ class GameController:
         if not house4_complete and house3_complete and house1_complete and house2_complete:   
             remaining_h4 = 3 - len(self.chosen_options["house_4"])
             self.create_button(self.buttons_frame, f"House 4 ({remaining_h4} areas left)", 
-                            lambda: self.show_house_choices("house_4"))               
+                            lambda: self.show_house_choices("house_4"))
+            
+        if house1_complete and house2_complete and house3_complete and house4_complete:
+            self.update_display("\nAfter you thoroughly searched all the houses. " 
+            "Finding a car key in the 2nd house and finding a key_card in the fourth"
+            " as well as finding gas you make yourself go back to the 2nd house and put fill the tuck with gas and you drive to the "
+            "military base - You get a bad feeling about this...")               
     def show_house_choices(self, house):
         self.clear_buttons()
         house_info = self.story.get_location_info(house)
@@ -165,16 +170,16 @@ class GameController:
             
         elif house == "house_4":
             # Front door option
-            self.create_button(self.buttons_frame, "Locked Door", 
-                             lambda: self.handle_house_3_choice("1"),
+            self.create_button(self.buttons_frame, "Barricaded Door", 
+                             lambda: self.handle_house_4_choice("1"),
                              disabled="1" in self.chosen_options["house_4"])
             # Window option
             self.create_button(self.buttons_frame, "Window", 
-                             lambda: self.handle_house_3_choice("2"),
+                             lambda: self.handle_house_4_choice("2"),
                              disabled="2" in self.chosen_options["house_4"])
             # Exterior option
             self.create_button(self.buttons_frame, "Exterior", 
-                             lambda: self.handle_house_3_choice("3"),
+                             lambda: self.handle_house_4_choice("3"),
                              disabled="3" in self.chosen_options["house_4"])
         # Show return to main choices button
         self.create_button(self.buttons_frame, "Return to Houses", self.show_main_choices)
@@ -219,8 +224,8 @@ class GameController:
             
         elif choice == "2":
             self.update_display(house_info["events"]["pickup_truck"])
-            self.player.add_item("car_key", 1)
             self.story.update_story_flags("found_car_key", True)
+            self.player.add_item("car_key", 1)
             self.update_display("You found a car key! This might be useful later.")
             self.update_inventory()
             
@@ -251,7 +256,7 @@ class GameController:
         elif choice == "2":  # Window
             self.update_display(house_info["events"]["broken_window"])
             if random.random() > 0.5:
-                self.initiate_combat(house_info["enemies"][:2])
+                self.initiate_combat(house_info["enemies"][:1])
             else:
                 self.initiate_combat(house_info["enemies"])
                 
@@ -274,19 +279,24 @@ class GameController:
         
         if choice == "1":  # barricaded door
             self.update_display(house_info["events"]["barricaded_door"])
-            
+            self.player.add_item("gas", 1)
+            self.story.update_story_flags("found_gas", True)
+            self.update_display("Found some gas!")
+            self.update_inventory()
+            self.show_house_choices("house_4")
             
         elif choice == "2":  # Window
             self.update_display(house_info["events"]["broken_window"])
             self.initiate_combat(house_info["enemies"][:1])
             self.player.add_item("key_card", 1)
+            self.story.update_story_flags("found_key_card", True)
             self.update_display("You found a key card! This might be useful later.")
             self.update_inventory()
                 
         elif choice == "3":  # Exterior
             self.update_display(house_info["events"]["exterior"])
-            self.player.add_item("bandage", 1)
-            self.update_display("Found an extra bandage!")
+            self.player.add_item("bandage", 3)
+            self.update_display("Found some extra bandages!")
             self.update_inventory()
             self.show_house_choices("house_4")
             

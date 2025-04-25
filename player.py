@@ -16,7 +16,7 @@ class Player:
             "ammo": 5,
             "car_key": 0,         # Car key for potential escape
             "gas": 0 ,             # Gas needed for the car
-            "key_card": 0        # Keycard for special locations
+            "key_card": 0        # Keycard for military base access
         }
     def get_inventory(self):
         return self.inventory
@@ -90,5 +90,5 @@ class Player:
         else:
             self.inventory[item_name] = qty
 
-    
-    
+
+
