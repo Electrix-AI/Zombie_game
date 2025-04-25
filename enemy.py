@@ -34,3 +34,5 @@ class banditE(enemy):
         return super().getatk()
     def gethp(self):
         return super().gethp()
+    def atk(self,player):
+        player.take_damage(self._baseA,source=self)
