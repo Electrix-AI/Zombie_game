@@ -165,7 +165,10 @@ class GameController:
             self.display.create_button(text, command)
     
     def handle_combat_choice(self, choice):
-        target = self.combat_manager.get_current_enemies()[0] if self.combat_manager.get_current_enemies() else None
+        if self.combat_manager.get_current_enemies():
+            target = self.combat_manager.get_current_enemies()[0]
+        else:
+            target = None
         target_killed, all_enemies_dead = self.combat_manager.handle_combat_choice(choice, target, self.player)
         
         self.update_status()
