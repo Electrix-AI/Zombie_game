@@ -8,7 +8,7 @@ class Story:
         self.story_flags = {
             "found_car_key": False,
             "has_map": False,
-            "met_survivor": False,
+            "met_survivors": False,
             "found_key_card": False,
             "found_gas": False,
         }
@@ -206,15 +206,15 @@ class Story:
         description = """
             Military Base: The final habitable place in this small town. 
             You can tell there are people here, the security lights are on and you can see outlines of people in the security towers.
-            This is the last hope you have. It seems to be a safe haven from the looks of it.
-            The only issue now is dealing with the zombies at the gate to ask if they have supplies to get out of here.
+            You have the key to enter this place as well.
+            The only issue now is dealing with the zombies at the gate to get inside.
              """
         
         # Create enemies for this location
         enemies = [
-            zombieE(7, 20),  # A stronger zombie
-            zombieE(3, 50),   # A Bulky zombie
-            zombieE(2,30)   # A weaker zombie
+            zombieE(7, 25),  # A stronger zombie
+            zombieE(3, 70),   # A Bulky zombie
+            zombieE(2,35)   # A weaker zombie
         ]
         
         loot = {
@@ -223,17 +223,25 @@ class Story:
         }
 
         events = {
+            "broken_car": """
+            Through the driver's side window, you notice:
+                - A small box of ammunition for your gun
+                - Extra pairs of clothes, but not in your size
+            """
+            ,
+            "Corpse": """
+            You notice a person laying on the desert sand by the road.
+            You poke the body with your ranged weapon to make sure they are not a zombie.
+            Fortuately for you, they are not a zombie but also not alive. You notice:
+                - A pair of bandages just a few feet from their body
+                - Some sunglasses but damaged
+            """
+            ,
             "front_gate": """
             From what you can see there are three zombies at the gate trying to bash it down.
             One seems to be on the bigger side, another like what you've seen in the first house
-            In your way of getting in that base.         
-            Are you sure you're ready for this fight? There's no turning back once you start
-            """
-            ,
-            "busted car": """
-            Through the driver's side window, you notice:
-            - A small box of ammunition for your gun
-            - A small roll of bandages
+            and the last one seems strong.         
+            There's no turning back now!
             """
         }
 
@@ -243,7 +251,7 @@ class Story:
             "enemies": enemies,
             "loot": loot,
             "events": events,
-            "difficulty": "hard"
+            "difficulty": "very hard"
         }
     
 

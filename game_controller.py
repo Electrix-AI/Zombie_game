@@ -38,6 +38,7 @@ class GameController:
         house2_complete = self.location_manager.is_house_complete("house_2", self.player)
         house3_complete = self.location_manager.is_house_complete("house_3", self.player)
         house4_complete = self.location_manager.is_house_complete("house_4", self.player)
+        mb_complete = self.location_manager.is_house_complete("military_base", self.player)
 
         if not house1_complete:
             remaining = self.location_manager.get_remaining_areas("house_1")
@@ -69,6 +70,11 @@ class GameController:
                                       "as well as finding gas, you make yourself go back to the 2nd house and fill the truck with gas. "
                                       "You drive to the military base - You get a bad feeling about this...")
             
+        if not mb_complete and house4_complete:
+            remaining = self.location_manager.get_remaining_areas("outside_of_base")
+            self.display.create_button(f"Military Base ({remaining} areas left)",
+                                       lambda: self.show_house_choices("outside_of_base"))
+            
     def show_house_choices(self, house):
         self.display.clear_buttons()
         house_info = self.story.get_location_info(house)
@@ -83,7 +89,9 @@ class GameController:
             self._create_house_3_buttons(house)
         elif house == "house_4":
             self._create_house_4_buttons(house)
-            
+        elif house == "outside_of_base":
+            self._create_mb_buttons(house)
+
         # Show return to main choices button
         self.display.create_button("Return to Houses", self.show_main_choices)
         
@@ -128,6 +136,16 @@ class GameController:
                                  lambda: self.handle_house_choice(house, "2"),
                                  disabled="2" in self.location_manager.chosen_options[house])
         self.display.create_button("Exterior", 
+                                 lambda: self.handle_house_choice(house, "3"),
+                                 disabled="3" in self.location_manager.chosen_options[house])
+    def _create_mb_buttons(self,house):
+        self.display.create_button("Broken Car", 
+                                 lambda: self.handle_house_choice(house, "1"),
+                                 disabled="1" in self.location_manager.chosen_options[house])
+        self.display.create_button("Lifeless Body", 
+                                 lambda: self.handle_house_choice(house, "2"),
+                                 disabled="2" in self.location_manager.chosen_options[house])
+        self.display.create_button("Front Gate", 
                                  lambda: self.handle_house_choice(house, "3"),
                                  disabled="3" in self.location_manager.chosen_options[house])
     

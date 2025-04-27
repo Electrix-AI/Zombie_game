@@ -42,8 +42,8 @@ class Player:
             self.infection_level += infection_gain
 
     def heal(self):
-        # if self.infection_level > 0:  #just in case if want to add no heal on infected
-        #     return 0.0 
+        if self.infection_level > 25:  #just in case if want to add no heal on infected
+            return 0.0 
         healed = 20.0
         self.health = min(100.0, self.health + healed)
         return healed
@@ -60,6 +60,8 @@ class Player:
         if item_name == "bandage":
             healed = self.heal()
             self.inventory[item_name] -= 1
+            if healed == 0:
+                return f"Uh Oh, you didn't heal! Your infection is too high!"
             return f"Used bandage and healed {healed} HP."
         elif item_name == "antibiotic":
             reduction = self.cure_infection()

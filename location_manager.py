@@ -8,7 +8,8 @@ class LocationManager:
             "house_1": set(),
             "house_2": set(),
             "house_3": set(),
-            "house_4": set()
+            "house_4": set(),
+            "outside_of_base": set()
         }
 
     def is_house_complete(self, house, player):
@@ -20,6 +21,8 @@ class LocationManager:
             return len(self.chosen_options["house_3"]) == 3
         elif house == "house_4":
             return len(self.chosen_options["house_4"]) == 3 and player.get_inventory()["key_card"]
+        elif house == "oustide_of_base":
+            return len(self.chosen_optinos["outside_of_base"]) == 3
         return False
 
     def get_remaining_areas(self, house):
@@ -40,6 +43,8 @@ class LocationManager:
             return self._handle_house_3(choice, house_info, player, combat_manager)
         elif house == "house_4":
             return self._handle_house_4(choice, house_info, player, combat_manager)
+        elif house == "outside_of_base":
+            return self._handle_mb(choice , house_info , player , combat_manager)
 
     def _handle_house_1(self, choice, house_info, player, combat_manager):
         if choice == "1":  # Front door
@@ -106,11 +111,31 @@ class LocationManager:
             player.add_item("bandage", 3)
             self.display.update_display("Found some extra bandages!")
             return False
+        
+    def _handle_mb(self, choice, house_info, player, combat_manager):
+        if choice == "1":
+            self.display.update_display(house_info["events"]["broken_car"])
+            player.add_item("ammo", 4)
+            self.display.update_display("Found some ammo!")
+            return False
+        elif choice == "2":
+            self.display.update_display(house_info["events"]["Corpse"])
+            combat_result = combat_manager.initiate_combat(player, house_info["enemies"][:1], self.story)
+            player.add_item("bandage", 2)
+            self.display.update_display("You found a pair of bandages!")
+            return False
+        elif choice == "3":
+            self.display.update_display(house_info["events"]["front_gate"])
+            combat_result = combat_manager.initiate_combat(player,house_info["enemies"][:1],self.story)
+            self.story.update_story_flags("met_surivors", True)
+            self.display.update_display("You opened the base door with the key card from earlier.")
+            return combat_result
 
     def reset(self):
         self.chosen_options = {
             "house_1": set(),
             "house_2": set(),
             "house_3": set(),
-            "house_4": set()
+            "house_4": set(),
+            "outside_of_base": set()
         } 

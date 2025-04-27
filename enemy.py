@@ -3,7 +3,7 @@ import random as r
 #have multiple enemies for now 
 class enemy():
     def __init__(self,baseA,baseH):
-        self._baseA = int(r.uniform(0.0,10.0) + baseA)
+        self._baseA = int(r.uniform(0.0,10.0) + baseA) #change for balancing
         self._baseH = int(r.uniform(0.0,10.0) + baseH)
     def getatk(self):
         return self._baseA
@@ -19,7 +19,7 @@ class zombieE(enemy):
     def gethp(self):
         return super().gethp()
     def infection(self):
-        zIn = r.uniform(0.0,3.0) #total infection rate of player
+        zIn = r.uniform(0.5,6.0) #total infection rate of player
         #print("Player's infection is now at:")
         return zIn
     def atk(self, player):
