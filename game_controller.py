@@ -38,7 +38,7 @@ class GameController:
         house2_complete = self.location_manager.is_house_complete("house_2", self.player)
         house3_complete = self.location_manager.is_house_complete("house_3", self.player)
         house4_complete = self.location_manager.is_house_complete("house_4", self.player)
-        mb_complete = self.location_manager.is_house_complete("military_base", self.player)
+        mb_complete = self.location_manager.is_house_complete("outside_of_base", self.player)
 
         if not house1_complete:
             remaining = self.location_manager.get_remaining_areas("house_1")
@@ -64,6 +64,12 @@ class GameController:
             self.display.create_button(f"House 4 ({remaining} areas left)", 
                                      lambda: self.show_house_choices("house_4"))
             
+        if mb_complete:
+            self.display.update_display("\nAfter unlocking the door to the base with the key card."
+                                        "You are greeted by the survivors that took shelfter in here."
+                                        "You plan to stay here for a bit until new information comes out.")
+            self.complete_game()
+
         if house1_complete and house2_complete and house3_complete and house4_complete:
             self.display.update_display("\nAfter thoroughly searching all the houses, "
                                       "finding a car key in the 2nd house and finding a key_card in the fourth "
@@ -72,8 +78,9 @@ class GameController:
             
         if not mb_complete and house4_complete:
             remaining = self.location_manager.get_remaining_areas("outside_of_base")
-            self.display.create_button(f"Military Base ({remaining} areas left)",
+            self.display.create_button(f"Outside of Military Base ({remaining} areas left)",
                                        lambda: self.show_house_choices("outside_of_base"))
+        
             
     def show_house_choices(self, house):
         self.display.clear_buttons()
@@ -213,6 +220,13 @@ class GameController:
         self.display.disable_display()
         self.display.create_button("New Game", self.reset_game)
     
+    def complete_game(self):
+        self.display.clear_buttons()
+        self.display.update_display("\n YOU WON - You survived the inital outbreak!")
+        self.display.disable_display()
+        self.display.create_button("Play Again?",self.reset_game)
+        self.display.create_button("Quit?",command=quit)
+
     def reset_game(self):
         # Reset all managers
         self.player = Player("Hero")
