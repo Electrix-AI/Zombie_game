@@ -16,7 +16,8 @@ class Player:
             "ammo": 5,
             "car_key": 0,         # Car key for potential escape
             "gas": 0 ,             # Gas needed for the car
-            "key_card": 0        # Keycard for military base access
+            "key_card": 0,        # Keycard for military base access
+            "radio": 0
         }
     def get_inventory(self):
         return self.inventory
@@ -42,8 +43,8 @@ class Player:
             self.infection_level += infection_gain
 
     def heal(self):
-        # if self.infection_level > 0:  #just in case if want to add no heal on infected
-        #     return 0.0 
+        if self.infection_level > 25:  #just in case if want to add no heal on infected
+            return 0.0 
         healed = 20.0
         self.health = min(100.0, self.health + healed)
         return healed
@@ -60,6 +61,8 @@ class Player:
         if item_name == "bandage":
             healed = self.heal()
             self.inventory[item_name] -= 1
+            if healed == 0:
+                return f"Uh oh! You're too infected to heal and lost the bandage! (infection > 25)"
             return f"Used bandage and healed {healed} HP."
         elif item_name == "antibiotic":
             reduction = self.cure_infection()

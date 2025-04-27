@@ -14,7 +14,8 @@ class GameController:
             "house_1": set(),
             "house_2": set(),
             "house_3": set(),
-            "house_4": set()
+            "house_4": set(),
+            "outside_military_base": set()
         }
         
         # Main game display
@@ -89,6 +90,8 @@ class GameController:
         house2_complete = len(self.chosen_options["house_2"]) == 3 and self.player.get_inventory()["car_key"] > 0  # All options explored and has key
         house3_complete = len(self.chosen_options["house_3"]) == 3  # All 3 options explored
         house4_complete = len(self.chosen_options["house_4"]) == 3 and self.player.get_inventory()["key_card"] # All 3 options explored
+        mB_complete = len(self.chosen_options["outside_military_base"]) == 3 and self.player.get_inventory()["radio"] # All 3 options explored
+
         if not house1_complete:
             remaining_h1 = 3 - len(self.chosen_options["house_1"])
             self.create_button(self.buttons_frame, f"House 1 ({remaining_h1} areas left)", 
@@ -113,12 +116,28 @@ class GameController:
             remaining_h4 = 3 - len(self.chosen_options["house_4"])
             self.create_button(self.buttons_frame, f"House 4 ({remaining_h4} areas left)", 
                             lambda: self.show_house_choices("house_4"))
-            
+
+        if not house4_complete and house3_complete and house1_complete and house2_complete:   
+            remaining_h4 = 3 - len(self.chosen_options["house_4"])
+            self.create_button(self.buttons_frame, f"House 4 ({remaining_h4} areas left)", 
+                            lambda: self.show_house_choices("house_4"))
+
         if house1_complete and house2_complete and house3_complete and house4_complete:
             self.update_display("\nAfter you thoroughly searched all the houses. " 
             "Finding a car key in the 2nd house and finding a key_card in the fourth"
             " as well as finding gas you make yourself go back to the 2nd house and put fill the tuck with gas and you drive to the "
-            "military base - You get a bad feeling about this...")               
+            "military base - You get a bad feeling about this...")  
+        
+        if not mB_complete and house1_complete and house2_complete and house3_complete and house4_complete:
+            remaining_mb = 3 - len(self.chosen_options["outside_military_base"])
+            self.create_button(self.buttons_frame, f"outside_military_base ({remaining_mb} areas left)", 
+                            lambda: self.show_house_choices("outside_military_base"))
+
+        if house1_complete and house2_complete and house3_complete and house4_complete and mB_complete:
+            self.update_display("\nAfter that final fight you are let into the base filled with other survivors like you."
+            " You take a minute to catch your breath and to really take in the situation."
+            " You decide on staying here for a while, just to gather your thoughts and plan your next move.")
+
     def show_house_choices(self, house):
         self.clear_buttons()
         house_info = self.story.get_location_info(house)
@@ -181,6 +200,21 @@ class GameController:
             self.create_button(self.buttons_frame, "Exterior", 
                              lambda: self.handle_house_4_choice("3"),
                              disabled="3" in self.chosen_options["house_4"])
+            
+        elif house == "outside_military_base":
+            # Front gat option
+            self.create_button(self.buttons_frame, "Front Gate", 
+                             lambda: self.handle_house_4_choice("1"),
+                             disabled="1" in self.chosen_options["outside_military_base"])
+            # Broken Car option
+            self.create_button(self.buttons_frame, "Broken Car", 
+                             lambda: self.handle_house_4_choice("2"),
+                             disabled="2" in self.chosen_options["outside_military_base"])
+            # Body option
+            self.create_button(self.buttons_frame, "Lifeless Body", 
+                             lambda: self.handle_house_4_choice("3"),
+                             disabled="3" in self.chosen_options["outside_military_base"])
+            
         # Show return to main choices button
         self.create_button(self.buttons_frame, "Return to Houses", self.show_main_choices)
     
@@ -303,7 +337,38 @@ class GameController:
         if not self.story.is_location_visited("house_4"):
             self.add_location_loot(house_info["loot"])
             self.story.mark_location_visited("house_4")
-   
+
+    def handle_military_base(self, choice):
+        # Mark this choice as chosen
+        self.chosen_options["outside_military_base"].add(choice)
+        
+        house_info = self.story.get_location_info("outside_military_base")
+        
+        if choice == "1":  # front gate
+            self.update_display(house_info["events"]["front gate"])
+            self.initiate_combat(house_info["enemies"][:1])
+            self.player.add_item("radio", 1)
+            self.story.update_story_flags("found_radio", True)
+            self.update_display("Found the radio! You can make contact with others!")
+            self.update_inventory()
+            self.show_house_choices("outside_military_base")
+            
+        elif choice == "2":  # broken car
+            self.update_display(house_info["events"]["broken_car"])
+            self.player.add_item("ammo", 5)
+            self.update_display("You found some rounds of ammo!")
+            self.update_inventory()
+        
+        elif choice == "3":  # lifeless body
+            self.update_display(house_info["events"]["lifeless_body"])
+            self.player.add_item("bandage", 2)
+            self.update_display("Found a pair of bandages!")
+            self.update_inventory()
+
+        if not self.story.is_location_visited("outside_military_base"):
+            self.add_location_loot(house_info["loot"])
+            self.story.mark_location_visited("house_4")
+
     def initiate_combat(self, enemies):
         self.current_enemies = enemies.copy()  # Make a copy of the enemies list
         combat_text = self.story.handle_combat(self.player, enemies)

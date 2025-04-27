@@ -14,8 +14,7 @@ class Story:
         }
         
     def get_intro(self):
-        return """
-        The world as you knew it has changed. A mysterious infection has turned most of the population into mindless zombies.
+        return """\nThe world as you knew it has changed. A mysterious infection has turned most of the population into mindless zombies.
         You find yourself in a small town, trying to survive. Your house was ransacked, forcing you to seek shelter elsewhere.
         There are two houses nearby that might have supplies...
 
@@ -212,14 +211,15 @@ class Story:
         
         # Create enemies for this location
         enemies = [
-            zombieE(7, 20),  # A stronger zombie
+            zombieE(7, 25),  # A stronger zombie
             zombieE(3, 50),   # A Bulky zombie
-            zombieE(2,30)   # A weaker zombie
+            zombieE(2,35)   # A weaker zombie
         ]
         
         loot = {
-            "ammo": 4,
-            "bandage": 1
+            "ammo": 5,
+            "bandage": 2,
+            "radio":1 
         }
 
         events = {
@@ -227,13 +227,21 @@ class Story:
             From what you can see there are three zombies at the gate trying to bash it down.
             One seems to be on the bigger side, another like what you've seen in the first house
             In your way of getting in that base.         
-            Are you sure you're ready for this fight? There's no turning back once you start
+            Are you sure you're ready for this fight? There's no turning back now!
             """
             ,
-            "busted car": """
+            "broken_car": """
             Through the driver's side window, you notice:
-            - A small box of ammunition for your gun
-            - A small roll of bandages
+                - A small box of ammunition for your gun
+                - Extra pairs of clothes, but not in your size
+            """
+            ,
+            "lifeless_body": """
+            You notice a person laying on the desert sand by the road.
+            You poke the body with your ranged weapon to make sure they are not a zombie.
+            Fortuately for you, they are not a zombie but also not alive. You notice:
+                - A pair of bandages just a few feet from their body
+                - Some sunglasses but damaged
             """
         }
 
@@ -243,7 +251,7 @@ class Story:
             "enemies": enemies,
             "loot": loot,
             "events": events,
-            "difficulty": "hard"
+            "difficulty": "Very hard"
         }
     
 

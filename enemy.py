@@ -19,7 +19,7 @@ class zombieE(enemy):
     def gethp(self):
         return super().gethp()
     def infection(self):
-        zIn = r.uniform(0.0,3.0) #total infection rate of player
+        zIn = r.uniform(0.5,6.0) #total infection rate of player
         #print("Player's infection is now at:")
         return zIn
     def atk(self, player):
