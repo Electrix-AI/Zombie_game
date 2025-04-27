@@ -21,8 +21,8 @@ class LocationManager:
             return len(self.chosen_options["house_3"]) == 3
         elif house == "house_4":
             return len(self.chosen_options["house_4"]) == 3 and player.get_inventory()["key_card"]
-        elif house == "oustide_of_base":
-            return len(self.chosen_optinos["outside_of_base"]) == 3
+        elif house == "outside_of_base":
+            return len(self.chosen_options["outside_of_base"]) == 3
         return False
 
     def get_remaining_areas(self, house):

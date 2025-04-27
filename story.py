@@ -208,7 +208,7 @@ class Story:
             You can tell there are people here, the security lights are on and you can see outlines of people in the security towers.
             You have the key to enter this place as well.
             The only issue now is dealing with the zombies at the gate to get inside.
-             """
+            """
         
         # Create enemies for this location
         enemies = [
@@ -281,6 +281,8 @@ class Story:
             return self.house_3()
         elif location == "house_4":
             return self.house_4()
+        elif location == "outside_of_base":
+            return self.military_base()
         else:
             return None
     
